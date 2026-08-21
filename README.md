@@ -76,6 +76,10 @@ REFRESH_TOKEN_TTL_DAYS=30
 CLIENT_ORIGIN="http://localhost:5173,http://127.0.0.1:5173"
 ```
 
+In production, set `CLIENT_ORIGIN` to the exact frontend URL (for example,
+`https://your-frontend.vercel.app`). The frontend must also send auth requests
+with credentials enabled so the cross-site refresh-token cookie is included.
+
 Prepare the database and start the API:
 
 ```bash
