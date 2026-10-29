@@ -156,3 +156,28 @@ production secrets outside source control.
 
 This project is currently shared as a portfolio project. No open-source license
 has been selected yet.
+## Vercel deployment
+
+The Express application is exported from `src/index.ts`. Vercel runs it as a
+Node.js function. Local `npm run dev` still uses SQLite and port 4000.
+
+Production uses a separate PostgreSQL schema in `prisma/postgres/schema.prisma`.
+The existing SQLite migrations remain exclusively for local development.
+
+1. Import this repository into Vercel with the repository root as Root Directory.
+2. Attach an external PostgreSQL database (for example Neon from Marketplace).
+3. Set production environment variables using `.env.vercel.example`:
+   `DATABASE_URL` is the pooled connection URL; `DIRECT_URL` is the direct URL
+   for migrations. Use the same database for both. Generate a private random
+   `JWT_SECRET` and set `CLIENT_ORIGIN` to the exact frontend origin.
+4. Deploy. `build:vercel` generates the PostgreSQL client, applies committed
+   PostgreSQL migrations, and checks TypeScript. Do not run the demo seed on
+   a populated production database: it is intended for disposable demo data.
+5. In the frontend Vercel project set `API_BASE_URL` to
+   `https://<backend-domain>/api`, then redeploy the frontend.
+6. Verify `/api/health`, registration, login, refresh, and project creation
+   on the deployed frontend. The frontend already enables credentials.
+
+Use a separate database for preview deployments so previews cannot change
+production data. This initial PostgreSQL migration creates an empty database;
+it does not migrate data from an existing local SQLite database.

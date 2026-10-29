@@ -13,7 +13,9 @@
     "migrate:deploy": "prisma migrate deploy",
     "generate": "prisma generate",
     "test": "node test-api.mjs",
-    "test:rbac": "node test-rbac.mjs"
+    "test:rbac": "node test-rbac.mjs",
+    "build:vercel": "prisma generate --schema prisma/postgres/schema.prisma && prisma migrate deploy --schema prisma/postgres/schema.prisma && tsc",
+    "migrate:postgres": "prisma migrate deploy --schema prisma/postgres/schema.prisma"
   },
   "dependencies": {
     "@prisma/client": "^6.0.0",
